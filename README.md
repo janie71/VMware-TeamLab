@@ -22,7 +22,10 @@
 
 ## 👩🏻‍💻 About Team Members
 
-추가좀 해주실분?????
+| <img src="https://github.com/wooxxo.png" width="120"/> |<img src="https://github.com/Kumin-91.png" width="120"/> | <img src="https://github.com/seajihey.png" width="120"/> | <img src="https://github.com/janie71.png" width="120"/> | <img src="https://github.com/Soooonnn.png" width="120"/> | <img src="https://github.com/dbehdrbs0806.png" width="120"/> | 
+|:--:|:--:|:--:|:--:|:--:|:--:|
+| [**우승연**](https://github.com/wooxxo) | [**최승민**](https://github.com/Kumin-91) | [**서지혜**](https://github.com/seajihey) | [**이유진**](https://github.com/janie71) | [**권순재**](https://github.com/Soooonnn) | [**유동균**](https://github.com/dbehdrbs0806) | 
+
 
 실습한거 중에 이미지가 많은건 따로 파일 만들어서 링크하면 좋을듯!
 
