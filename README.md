@@ -1,10 +1,12 @@
 # VMware-TeamLab
 
-## 💻 구성도 빡!!!
+## 💻 Architecture
 
-대충 이미지 네트워크 구성도 빡!
+### Infra Architecture
+![Infra Architecture](/Images/Infra_architecture.png)
 
-고? 사용한 기술 빡!!
+### vSAN Architecture
+![vSAN Architecture](/Images/vSAN_architecture.png)
 
 ## 📘 Index
 
@@ -25,9 +27,6 @@
 | <img src="https://github.com/wooxxo.png" width="120"/> |<img src="https://github.com/Kumin-91.png" width="120"/> | <img src="https://github.com/seajihey.png" width="120"/> | <img src="https://github.com/janie71.png" width="120"/> | <img src="https://github.com/Soooonnn.png" width="120"/> | <img src="https://github.com/dbehdrbs0806.png" width="120"/> | 
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | [**우승연**](https://github.com/wooxxo) | [**최승민**](https://github.com/Kumin-91) | [**서지혜**](https://github.com/seajihey) | [**이유진**](https://github.com/janie71) | [**권순재**](https://github.com/Soooonnn) | [**유동균**](https://github.com/dbehdrbs0806) | 
-
-
-실습한거 중에 이미지가 많은건 따로 파일 만들어서 링크하면 좋을듯!
 
 ## 🤝 Day 01 - Strategic Planning & Conceptual Design
 
