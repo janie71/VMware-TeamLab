@@ -54,15 +54,47 @@
 
 ### Design Rationale
 
-| 설계 원칙 | 적용 내용 |
-|:---|:---|
-| **트래픽 격리** | Management / Storage / vMotion / FT를 VLAN 0, 20, 30, 40으로 완전 분리 |
-| **SSO 도메인 통합** | 양쪽 vCenter를 동일 SSO 도메인(`seoul.seung.fisa`)으로 ELM 구성 → 한쪽 장애 시에도 관리 가능 |
-| **하이브리드 라우팅** | VyOS `eth0`에 Untagged(Mgmt) + Tagged(VLAN 20/30/40) 서브인터페이스 동시 운용 |
-| **Trunk Port** | 라우터 연결 Port Group을 VLAN 4095로 설정하여 모든 태그 수용 |
-| **공유 스토리지** | TrueNAS iSCSI를 전용 Storage VLAN(20)에 격리하여 공유 Datastore 구성 |
+#### 1. SSO 도메인 통합 및 ELM 기반의 멀티 리전 관리 가용성 확보
 
-> vSwitch/Port Group 상세 설계, VyOS 라우터 설정, Nested ESXi 매핑 등은 [📄 Day 02](docs/Day02.md) 에서 확인할 수 있습니다.
+* 서울과 제주의 vCenter를 단일 SSO 도메인 (`seoul.seung.fisa`)으로 통합하여 ELM 환경을 구축했습니다.
+
+* 단일 계정 로그인을 통해 두 사이트의 자원을 한 화면에서 제어하는 통합 가시성을 확보했습니다.
+
+* 한쪽 리전의 vCenter 장애 시에도 타 리전의 관리 거점을 통해 인프라 상태를 모니터링하고 즉각 대응할 수 있는 운영 연속성을 마련했습니다.
+
+#### 2. VLAN 기반 트래픽 격리를 통한 성능 최적화 및 보안 강화
+
+* **서비스별 대역 분리:** Management, Storage, vMotion, FT 트래픽을 VLAN 0, 20, 30, 40으로 완전 격리하여 트래픽 간섭을 차단하고 보안성을 높였습니다
+
+* **하이브리드 라우팅 설계:** VyOS 라우터에서 Untagged (Management)와 Tagged (VLAN 20/30/40) 트래픽을 동시에 처리하는 효율적인 서브인터페이스 구조를 채택했습니다.
+
+* **트렁크 최적화:** VyOS 라우터 연결 Port Group을 VLAN 4095로 설정하여, vSwitch 레벨에서 모든 태그된 패킷을 유연하게 수용하도록 구성했습니다.
+
+* **공유 스토리지 가용성:** TrueNAS iSCSI 타겟을 전용 Storage VLAN (20)에 배치하여, 서비스 트래픽과 분리된 안정적인 고속 공유 데이터스토어 환경을 구현했습니다.
+
+#### 3. Nested ESXi 환경 최적화를 위한 계층별 네트워크 설계
+
+* **Base Layer (WS-ESXi)**
+
+    * 물리 호스트는 단일 vSwitch 구성을 통해 물리 NIC 자원을 통합 관리합니다.
+    
+    * VyOS 라우터가 모든 트래픽을 제어할 수 있도록 VGT (Virtual Guest Tagging) 모드를 적용했습니다.
+    
+    * 각 서비스별 Port Group에는 VLAN Tagging을 적용하여 논리적 네트워크 분리를 구현했습니다.
+
+* **Nested Layer (ESXi)**
+
+    * 각 Nested ESXi 호스트에는 용도별로 독립된 vNIC을 할당하여 트래픽 간섭을 최소화했습니다.
+
+    * VLAN 대역마다 전용 vSwitch를 1:1로 매핑하는 방식을 채택하여, 중첩 환경 내에서도 실제 물리 서버와 유사한 대역폭 최적화 환경을 구현했습니다.
+
+* **VLAN 태깅 단일화 원칙**
+
+    * Nested ESXi 내부 Port Group의 VLAN을 0으로 설정하여, WS-ESXi에서 이미 태깅된 패킷이 추가로 태깅되는 이중 태깅 문제를 방지했습니다.
+
+    * 이를 통해 중첩 가상화의 고질적인 문제인 이중 태깅에 따른 CPU 오버헤드를 차단하고 통신 효율을 극대화했습니다.
+
+> vSwitch/Port Group 상세 설계, VyOS 라우터 설정, Nested ESXi 매핑 등은 [📄 Day 02](docs/Day_02.md) 에서 확인할 수 있습니다.
 
 ## 🛠️ Infrastructure Features
 
