@@ -98,20 +98,30 @@
 
 ## 🛠️ Infrastructure Features
 
+### 🌐 Network
+
 | Feature | 설명 | 적용 목적 |
 |:---|:---|:---|
 | **Nested Virtualization** | 물리 서버 1대 위에 가상 ESXi 호스트를 중첩 구성 | 제한된 하드웨어에서 멀티 호스트 클러스터 환경 재현 |
 | **Enhanced Linked Mode** | 두 vCenter를 동일 SSO 도메인으로 통합 관리 | 한쪽 vCenter 장애 시에도 동일 자격증명으로 VM 관리 가능 |
-| **VLAN Segmentation** | Management / Storage / vMotion / FT 트래픽을 VLAN 0, 20, 30, 40으로 격리 | 트래픽 간섭 방지 및 보안성 확보 |
-| **vSAN** | 여러 ESXi 호스트의 로컬 디스크를 하나의 분산 스토리지로 통합 (SDS) | Scale-Out 기반 확장, 정책 기반 스토리지 관리 |
-| **DRS** | 클러스터 내 호스트 간 리소스 사용량을 모니터링하고 VM을 자동 재배치 | CPU/Memory 로드 밸런싱, Affinity/Anti-Affinity 규칙 적용 |
-| **HA** | 호스트 장애 감지 시 해당 호스트의 VM을 다른 호스트에서 자동 재시작 | 단일 장애점 제거, 서비스 연속성 보장 |
-| **FT** | Primary VM과 동일한 Secondary VM을 실시간 동기화하여 무중단 보호 | 미션 크리티컬 VM의 다운타임 제로 |
-| **vMotion** | 실행 중인 VM을 다른 호스트로 무중단 라이브 마이그레이션 | DRS/HA의 기반 기술, 호스트 유지보수 시 서비스 중단 없이 이동 |
-| **Content Library** | VM 템플릿, ISO 이미지를 중앙 저장소에서 관리 및 사이트 간 배포 | 멀티 사이트 간 템플릿 동기화, 표준화된 VM 배포 |
-| **iSCSI Shared Storage** | TrueNAS 기반 ZFS Pool을 iSCSI Target으로 공유 | vMotion/HA를 위한 공유 Datastore 환경 구성 |
+| **VLAN Segmentation** | Mgmt / Storage / vMotion / FT를 VLAN 0, 20, 30, 40으로 격리 | 트래픽 간섭 방지 및 보안성 확보 |
 
-<br/>
+### 💾 Storage
+
+| Feature | 설명 | 적용 목적 |
+|:---|:---|:---|
+| **iSCSI Shared Storage** | TrueNAS 기반 ZFS Pool을 iSCSI Target으로 공유 | vMotion/HA를 위한 공유 Datastore 환경 구성 |
+| **vSAN** | 여러 ESXi 호스트의 로컬 디스크를 하나의 분산 스토리지로 통합 | Scale-Out 기반 확장, 정책 기반 스토리지 관리 |
+| **Content Library** | VM 템플릿, ISO 이미지를 중앙 저장소에서 관리 | 멀티 사이트 간 템플릿 동기화, 표준화된 VM 배포 |
+
+### 🔄 High Availability
+
+| Feature | 설명 | 적용 목적 |
+|:---|:---|:---|
+| **vMotion** | 실행 중인 VM을 다른 호스트로 무중단 라이브 마이그레이션 | DRS/HA의 기반 기술, 유지보수 시 서비스 중단 없이 이동 |
+| **DRS** | 클러스터 내 호스트 간 리소스 사용량 모니터링 및 VM 자동 재배치 | CPU/Memory 로드 밸런싱, Affinity/Anti-Affinity 규칙 적용 |
+| **HA** | 호스트 장애 감지 시 해당 호스트의 VM을 다른 호스트에서 자동 재시작 | 단일 장애점 제거, 서비스 연속성 보장 |
+| **FT** | Primary VM과 동일한 Secondary VM을 실시간 동기화 | 미션 크리티컬 VM의 다운타임 제로 |
 
 ## 📅 Daily Progress
 
