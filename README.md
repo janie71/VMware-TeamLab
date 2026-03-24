@@ -136,14 +136,15 @@
 - **원인**: WS-ESXi Port Group에서 이미 태깅된 패킷에 Nested ESXi가 추가 태깅 → 이중 태깅 발생
 - **해결**: Nested ESXi 내부 모든 Port Group의 VLAN을 0으로 설정 (L2 태깅 단일화 원칙 적용)
 
-**Windows VM 템플릿 복제 시 SID/IP 충돌**
+**Windows VM 템플릿에서 Sysprep 미실행 이슈**
 
-- **문제**: 템플릿에서 복제한 Windows VM들이 동일 SID와 IP를 가져 네트워크 충돌 발생  
+- **문제**: 템플릿에서 복제한 Windows VM들이 Sysprep 일반화 과정을 수행하지 않아, 클론된 VM에서 SID 충돌 및 네트워크 설정 오류 발생
 
-- **원인**: Sysprep 미실행 상태로 템플릿 변환 → 원본의 고유 식별 정보(SID, IP)가 그대로 복제
-- **해결**: 템플릿 생성 전 `sysprep /oobe /generalize /shutdown` 실행으로 식별 정보 초기화 + vCenter 사용자 지정 규격으로 배포 시 새 설정 자동 주입
+- **원인**: 전체 사용자용으로 등록되지 않은 특정 언어팩 패키지가 Sysprep의 일반화 과정을 방해함
 
-> 각 이슈의 상세 분석은 Day별 문서에서 확인할 수 있습니다. → [Day 02](docs/Day02.md) | [Day 03](/Troubles/Day_03_Windows_10_Sysprep.md)
+- **해결**: 템플릿 생성 전 PowerShell 명령어로 해당 언어팩을 모든 사용자에서 제거 → Sysprep 재실행하여 일반화 성공
+
+> 각 이슈의 상세 분석은 Day별 문서에서 확인할 수 있습니다. → [Day 02](./docs/Day_02.md) | [Day 03 - Windows 10 Sysprep](./Troubles/Day_03_Windows_10_Sysprep.md)
 
 
 
