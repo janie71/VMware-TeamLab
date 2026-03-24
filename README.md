@@ -129,12 +129,11 @@
 
 | Day | Title | Key-Points | Docs |
 |:--:|:--|:--|:--:|
-| 1 | Strategic Planning & Conceptual Design | TBD | [📄 바로가기](./docs/Day_01.md) |
-| 2 | Building Core Infrastructure & Management Plane | TBD | [📄 바로가기](./docs/Day_02.md) |
-| 3 | Detailing Our Infrastructure - I | TBD | [📄 바로가기](./docs/Day_03.md) |
-| 4 | Detailing Our Infrastructure - II | TBD | [📄 바로가기](./docs/Day_04.md) |
-| 5 | vSAN and VM Provisioning Portal | TBD | [📄 바로가기](./docs/Day_05.md) |
-
+| 1 | Strategic Planning & Conceptual Design | 전체 아키텍처 설계, ESXi 초기 구성, 이중 vCenter 전략 수립 | [📄 바로가기](./docs/Day_01.md) |
+| 2 | Building Core Infrastructure & Management Plan | ESXi 설정, VyOS 라우팅/NAT, DNS 서버, vCenter ELM, TrueNAS iSCSI, VLAN 하이브리드 구성 | [📄 바로가기](./docs/Day_02.md) |
+| 3 | Detailing Our Infrastructure - I | Lockdown Mode, VM Tag/Template, Alarm, DRS, Autostart/Shutdown | [📄 바로가기](./docs/Day_03.md) |
+| 4 | Detailing Our Infrastructure - II | Resource Pool, HA (High Availability), FT (Fault Tolerance), vApp | [📄 바로가기](./docs/Day_04.md) |
+| 5 | vSAN and VM Provisioning Portal | vCenter Backup, vSAN 클러스터 구성, Spring Boot + vCenter API 기반 VM 배포 웹 포털 | [📄 바로가기](./docs/Day_05.md) |
 ## ⚠️ Troubleshooting
 
 프로젝트 진행 중 겪은 주요 이슈와 해결 과정을 정리했습니다.
