@@ -31,25 +31,25 @@
 두 개의 독립된 네트워크 대역을 VyOS 라우터로 연결하는 **멀티 사이트 구조**를 설계했습니다.
 
 ```
-    ┌──────────────────────────────────────────────────────────────────┐
-    │                       WAN Transit (KT-WAN)                       │
-    │                192.168.30.129 ←──→ 192.168.30.130                │
-    ├────────────────────────────────┬─────────────────────────────────┤
-    │           Seoul Area           │            Jeju Area            │
-    │          10.30.x.x/16          │          172.30.x.x/16          │
-    ├────────────────────────────────┼─────────────────────────────────┤
-    │  VLAN  0  │ Management         │  VLAN  0  │ Management          │
-    │  VLAN 20  │ Storage (iSCSI)    │  VLAN 20  │ Storage (iSCSI)     │
-    │  VLAN 30  │ vMotion            │  VLAN 30  │ vMotion             │
-    │  VLAN 40  │ Fault Tolerance    │  VLAN 40  │ Fault Tolerance     │
-    ├────────────────────────────────┼─────────────────────────────────┤
-    │  ESXi-01    10.30.10.10        │  ESXi-01    172.30.10.10        │
-    │  ESXi-02    10.30.10.20        │  ESXi-02    172.30.10.20        │
-    │  ESXi-03    10.30.10.30        │  ESXi-03    172.30.10.30        │
-    │  vCenter    10.30.10.102       │  vCenter    172.30.10.102       │
-    │  TrueNAS    10.30.20.40        │  TrueNAS    172.30.20.40        │
-    │  DNS        10.30.10.77        │  DNS        172.30.10.77        │
-    └────────────────────────────────┴─────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                       WAN Transit (KT-WAN)                       │
+│                192.168.30.129 ←──→ 192.168.30.130                │
+├────────────────────────────────┬─────────────────────────────────┤
+│           Seoul Area           │            Jeju Area            │
+│          10.30.x.x/16          │          172.30.x.x/16          │
+├────────────────────────────────┼─────────────────────────────────┤
+│  VLAN  0  │ Management         │  VLAN  0  │ Management          │
+│  VLAN 20  │ Storage (iSCSI)    │  VLAN 20  │ Storage (iSCSI)     │
+│  VLAN 30  │ vMotion            │  VLAN 30  │ vMotion             │
+│  VLAN 40  │ Fault Tolerance    │  VLAN 40  │ Fault Tolerance     │
+├────────────────────────────────┼─────────────────────────────────┤
+│  ESXi-01    10.30.10.10        │  ESXi-01    172.30.10.10        │
+│  ESXi-02    10.30.10.20        │  ESXi-02    172.30.10.20        │
+│  ESXi-03    10.30.10.30        │  ESXi-03    172.30.10.30        │
+│  vCenter    10.30.10.102       │  vCenter    172.30.10.102       │
+│  TrueNAS    10.30.20.40        │  TrueNAS    172.30.20.40        │
+│  DNS        10.30.10.77        │  DNS        172.30.10.77        │
+└────────────────────────────────┴─────────────────────────────────┘
 ```
 
 ### Design Rationale
@@ -134,43 +134,43 @@
 | 3 | Detailing Our Infrastructure - I | Lockdown Mode, VM Tag/Template, Alarm, DRS, Autostart/Shutdown | [📄 바로가기](./docs/Day_03.md) |
 | 4 | Detailing Our Infrastructure - II | Resource Pool, HA (High Availability), FT (Fault Tolerance), vApp | [📄 바로가기](./docs/Day_04.md) |
 | 5 | vSAN and VM Provisioning Portal | vCenter Backup, vSAN 클러스터 구성, Spring Boot + vCenter API 기반 VM 배포 웹 포털 | [📄 바로가기](./docs/Day_05.md) |
+
 ## ⚠️ Troubleshooting
 
 프로젝트 진행 중 겪은 주요 이슈와 해결 과정을 정리했습니다.
 
 **Nested ESXi VLAN 이중 태깅 이슈**
 
-- **문제**: Nested ESXi 내부 Port Group에 VLAN을 설정하자 통신 불가  
+* **문제**: Nested ESXi 내부 Port Group에 VLAN을 설정하자 통신 불가  
 
-- **원인**: WS-ESXi Port Group에서 이미 태깅된 패킷에 Nested ESXi가 추가 태깅 → 이중 태깅 발생
-- **해결**: Nested ESXi 내부 모든 Port Group의 VLAN을 0으로 설정 (L2 태깅 단일화 원칙 적용)
+* **원인**: WS-ESXi Port Group에서 이미 태깅된 패킷에 Nested ESXi가 추가 태깅 → 이중 태깅 발생
+
+* **해결**: Nested ESXi 내부 모든 Port Group의 VLAN을 0으로 설정 (L2 태깅 단일화 원칙 적용)
 
 **Windows VM 템플릿에서 Sysprep 미실행 이슈**
 
-- **문제**: 템플릿에서 복제한 Windows VM들이 Sysprep 일반화 과정을 수행하지 않아, 클론된 VM에서 SID 충돌 및 네트워크 설정 오류 발생
+* **문제**: 템플릿에서 복제한 Windows VM들이 Sysprep 일반화 과정을 수행하지 않아, 클론된 VM에서 SID 충돌 및 네트워크 설정 오류 발생
 
-- **원인**: 전체 사용자용으로 등록되지 않은 특정 언어팩 패키지가 Sysprep의 일반화 과정을 방해함
+* **원인**: 전체 사용자용으로 등록되지 않은 특정 언어팩 패키지가 Sysprep의 일반화 과정을 방해함
 
-- **해결**: 템플릿 생성 전 PowerShell 명령어로 해당 언어팩을 모든 사용자에서 제거 → Sysprep 재실행하여 일반화 성공
+* **해결**: 템플릿 생성 전 PowerShell 명령어로 해당 언어팩을 모든 사용자에서 제거 → Sysprep 재실행하여 일반화 성공
 
-> 각 이슈의 상세 분석은 Day별 문서에서 확인할 수 있습니다. → [Day 02](./docs/Day_02.md) | [Day 03 - Windows 10 Sysprep](./Troubles/Day_03_Windows_10_Sysprep.md)
-
-
-
+> 각 이슈의 상세 분석은 Day별 문서에서 확인할 수 있습니다. → [📄 Day 02](./docs/Day_02.md) | [📄 Day 03 - Windows 10 Sysprep](./Troubles/Day_03_Windows_10_Sysprep.md)
 
 ---
 
 ## 👩🏻‍💻 LAB - VMware VM Provisioning Portal
 
 ![vmweb1.png](./Images/vmweb1.png)
+
 ![vmweb2.png](./Images/vmweb2.png)
 
 Spring Boot 기반으로 구현한 **VMware 가상머신 프로비저닝 자동화 웹 포털**입니다.
 
-**vCenter, ESXi, 네트워크, 스토리지로 구성된 인프라 구조를 학습한 뒤 이를 실제 서비스 형태로 적용**해보기 위해 진행했습니다.<br> 
+**vCenter, ESXi, 네트워크, 스토리지로 구성된 인프라 구조를 학습한 뒤 이를 실제 서비스 형태로 적용**해보기 위해 진행했습니다.
 
 기존에는 vCenter UI에서 템플릿 선택, CPU/Memory 설정, 네트워크 구성 등의 작업을 수동으로 수행해야 했지만,
-이를 **웹 요청 → API 기반 자동화 흐름으로 전환**하여 반복 작업을 단순화했습니다.<br>
+이를 **웹 요청 → API 기반 자동화 흐름으로 전환**하여 반복 작업을 단순화했습니다.
 
 VM 생성 이후에는 **Apache Guacamole과 자동으로 연결되어 화면을 미러링 할 있는 구조**를 구현했습니다. 
 
@@ -179,6 +179,7 @@ VM 생성 이후에는 **Apache Guacamole과 자동으로 연결되어 화면을
 ### 🔍 Overview
 
 * vCenter에서 수행하던 작업을 **API 단위로 분해하여 자동화**
+
 * VM 생성부터 접속까지의 흐름을 **하나의 서비스로 통합**
 
 ---
@@ -188,11 +189,13 @@ VM 생성 이후에는 **Apache Guacamole과 자동으로 연결되어 화면을
 1. **vCenter API 기반 VM 자동 생성**
 
   * Datacenter / Cluster / Network / Datastore / Template 검증
+
   * Template 기반 VM Clone
 
 2. **리소스 및 네트워크 설정 자동화**
 
   * CPU / Memory 설정
+
   * Guest Customization 기반 IP 설정
 
 3. **원격 접속 자동 연결**
@@ -211,12 +214,12 @@ VM 생성 이후에는 **Apache Guacamole과 자동으로 연결되어 화면을
 Web UI → Spring Boot → vCenter API → VM 생성 → Guacamole → 접속 URL 반환
 ```
  
-
 * 현재 배포 환경이 아니기에 Rocky Linux VM 배포를 기준으로 구성했습니다.
 
 * ✨ 해당내용은 [VMwareWeb](https://github.com/seajihey/VMwareWeb)을 참고하세요
 
 ## 📂 Project Structure
+
 ```
 VMware-TeamLab/
 ├── README.md              # 프로젝트 메인 (현재 문서)
