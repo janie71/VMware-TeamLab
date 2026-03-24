@@ -146,15 +146,61 @@
 > 각 이슈의 상세 분석은 Day별 문서에서 확인할 수 있습니다. → [Day 02](docs/Day02.md) | [Day 03](/Troubles/Day_03_Windows_10_Sysprep.md)
 
 
+
+
+---
+
 ## 👩🏻‍💻 LAB - VMware VM Provisioning Portal
 
 ![vmweb1.png](./Images/vmweb1.png)
-
 ![vmweb2.png](./Images/vmweb2.png)
 
-Spring Boot 기반으로 만든 VMware 가상머신 배포 자동화 웹 포털입니다.
+Spring Boot 기반으로 구현한 **VMware 가상머신 프로비저닝 자동화 웹 포털**입니다.
 
-* vCenter에 직접 접속해 템플릿, CPU, 메모리, 네트워크 등을 수동으로 선택하는 대신, 웹 화면에서 배포 정보를 입력하면 vCenter API를 통해 실제 VM을 생성하고, 이후 Guacamole을 이용한 원격 접속 URL까지 생성할 수 있도록 구현했습니다.
+**vCenter, ESXi, 네트워크, 스토리지로 구성된 인프라 구조를 학습한 뒤 이를 실제 서비스 형태로 적용**해보기 위해 진행했습니다.<br> 
+
+기존에는 vCenter UI에서 템플릿 선택, CPU/Memory 설정, 네트워크 구성 등의 작업을 수동으로 수행해야 했지만,
+이를 **웹 요청 → API 기반 자동화 흐름으로 전환**하여 반복 작업을 단순화했습니다.<br>
+
+VM 생성 이후에는 **Apache Guacamole과 자동으로 연결되어 화면을 미러링 할 있는 구조**를 구현했습니다. 
+
+---
+
+### 🔍 Overview
+
+* vCenter에서 수행하던 작업을 **API 단위로 분해하여 자동화**
+* VM 생성부터 접속까지의 흐름을 **하나의 서비스로 통합**
+
+---
+
+### ⚙️ Key Features
+
+1. **vCenter API 기반 VM 자동 생성**
+
+  * Datacenter / Cluster / Network / Datastore / Template 검증
+  * Template 기반 VM Clone
+
+2. **리소스 및 네트워크 설정 자동화**
+
+  * CPU / Memory 설정
+  * Guest Customization 기반 IP 설정
+
+3. **원격 접속 자동 연결**
+
+  * Guacamole API 기반 접속 URL 생성
+
+4. **배포 이력 관리**
+
+  * VM 생성 요청 및 결과를 DB에 저장하여 추적 가능
+
+---
+
+### 🔄 Flow 및 상세
+
+```text
+Web UI → Spring Boot → vCenter API → VM 생성 → Guacamole → 접속 URL 반환
+```
+ 
 
 * 현재 배포 환경이 아니기에 Rocky Linux VM 배포를 기준으로 구성했습니다.
 
